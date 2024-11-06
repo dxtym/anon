@@ -9,30 +9,37 @@ import (
 )
 
 type Store struct {
-	config utils.Config
-	db     *sql.DB
+	DB *sql.DB 
+	Config utils.Config
+	UserRepo *UserRepo
 }
 
 func NewStore(cfg utils.Config) *Store {
-	return &Store{
-		config: cfg,
-	}
+	return &Store{Config: cfg}
 }
 
 func (s *Store) Open() error {
-	db, err := sql.Open("postgres", s.config.DatabaseURL)
+	db, err := sql.Open("postgres", s.Config.DatabaseURL)
 	if err != nil {
 		return err
 	}
 	if err = db.Ping(); err != nil {
 		return err
 	}
-	s.db = db
+	s.DB = db
 	return nil
 }
 
 func (s *Store) Close() {
-	if s.db != nil {
-		s.db.Close()
+	if s.DB != nil {
+		s.DB.Close()
 	}
+}
+
+func (s *Store) User() *UserRepo {
+	if s.UserRepo != nil {
+		return s.UserRepo
+	}
+	s.UserRepo = &UserRepo{store: s}
+	return s.UserRepo
 }
