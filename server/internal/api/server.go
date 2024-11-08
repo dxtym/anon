@@ -1,8 +1,6 @@
 package api
 
 import (
-	"net/http"
-
 	"github.com/dxtym/anon/server/internal/store"
 	"github.com/dxtym/anon/server/internal/utils"
 	"github.com/gin-gonic/gin"
@@ -38,9 +36,8 @@ func (s *Server) Start() error {
 }
 
 func (s *Server) setUpRouting() {
-	s.router.GET("/", func(ctx *gin.Context) {
-		ctx.JSON(http.StatusOK, "Hello, world!")
-	})
+	s.router.POST("/users/register", s.registerUser)
+	// s.router.POST("/users/login", s.loginUser)
 }
 
 func (s *Server) setUpStore() error {

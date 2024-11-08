@@ -13,7 +13,6 @@ var cfg, _ = utils.LoadConfig("../..")
 func testUser() *models.User {
 	return &models.User{
 		Username: "admin",
-		Email:    "admin@mail.com",
 		Password: "password",
 	}
 }

@@ -22,10 +22,8 @@ func (us *UserService) Create(user *models.User) (*models.User, error) {
 	}
 
 	if err := us.store.db.QueryRow(
-		"INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id;",
-		user.Username,
-		user.Email,
-		hashed,
+		"INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id;", 
+		user.Username, hashed,
 	).Scan(&user.Id); err != nil {
 		return nil, err
 	}
@@ -36,7 +34,7 @@ func (us *UserService) Create(user *models.User) (*models.User, error) {
 func (us *UserService) Find(username string) (*models.User, error) {
 	user := &models.User{}
 	if err := us.store.db.QueryRow(
-		"SELECT id, username, email, password FROM users WHERE username = $1",
+		"SELECT id, username, password FROM users WHERE username = $1",
 		username,
 	).Scan(user.Id, user.Username, user.Password); err != nil {
 		return nil, err
