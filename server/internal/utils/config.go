@@ -12,9 +12,11 @@ func LoadConfig(path string) (Config, error) {
 	viper.AddConfigPath(path)
 	viper.SetConfigName("app")
 	viper.SetConfigType("env")
+
 	if err := viper.ReadInConfig(); err != nil {
 		return cfg, err
 	}
 	err := viper.Unmarshal(&cfg)
+
 	return cfg, err
 }

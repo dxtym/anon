@@ -20,10 +20,12 @@ func NewServer(cfg utils.Config) *Server {
 		router: gin.Default(),
 		store:  store.NewStore(cfg),
 	}
+
 	server.setUpRouting()
 	if err := server.setUpStore(); err != nil {
 		return nil
 	}
+
 	return server
 }
 
@@ -31,6 +33,7 @@ func (s *Server) Start() error {
 	if err := s.router.Run(s.config.Address); err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -44,5 +47,6 @@ func (s *Server) setUpStore() error {
 	if err := s.store.Open(); err != nil {
 		return err
 	}
+
 	return nil
 }
